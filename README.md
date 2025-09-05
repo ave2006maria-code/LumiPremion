@@ -1,1 +1,0 @@
-This is my personal website, where I share information about myself and my projects. My online portfolio with information, contacts, and work. Simple personal website created in HTML and CSS, published on GitHub Pages.
