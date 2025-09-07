@@ -1,0 +1,413 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Ave Book Portfolio</title>  
+  <!-- Font Awesome -->  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  
+
+  <style>  
+    * { margin: 0; padding: 0; box-sizing: border-box; }  
+
+    body {  
+      font-family: 'Arial', sans-serif;  
+      background: #f5f5f5;  
+      color: #333;  
+      line-height: 1.6;  
+    }  
+
+    /* ==== NAV ==== */  
+    nav {  
+      position: fixed;  
+      top: 0;  
+      left: 0;  
+      width: 100%;  
+      z-index: 1000;  
+      background: #333;  
+      padding: 10px 20px;  
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);  
+    }  
+
+    .menu-container {  
+      display: flex;  
+      justify-content: space-between;  
+      align-items: center;  
+    }  
+
+    .logo {  
+      color: #fff;  
+      font-weight: bold;  
+      font-size: 1.2rem;  
+    }  
+
+    .menu-icon {  
+      font-size: 1.8rem;  
+      color: #fff;  
+      cursor: pointer;  
+      transition: transform 0.3s ease;  
+    }  
+    .menu-icon:hover { transform: rotate(90deg); }  
+
+    .menu-links {  
+      display: none;  
+      position: absolute;  
+      top: 60px;  
+      right: 20px;  
+      flex-direction: column;  
+      background: #333;  
+      padding: 15px;  
+      border-radius: 8px;  
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);  
+      animation: fadeIn 0.3s ease;  
+    }  
+
+    @keyframes fadeIn {  
+      from { opacity: 0; transform: translateY(-10px); }  
+      to { opacity: 1; transform: translateY(0); }  
+    }  
+
+    .menu-links a {  
+      color: #fff;  
+      text-decoration: none;  
+      font-weight: bold;  
+      margin: 10px 0;  
+      transition: color 0.3s;  
+    }  
+
+    .menu-links a:hover {  
+      color: #6C63FF;  
+    }  
+
+    /* ==== HEADER ==== */  
+    header {  
+      background: url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=80')   
+                  no-repeat center center/cover;  
+      color: #fff;  
+      padding: 100px 20px;  
+      text-align: center;  
+      position: relative;  
+      margin-top: 60px;  
+    }  
+
+    header::after {  
+      content: '';  
+      position: absolute;  
+      top: 0; left: 0;  
+      width: 100%; height: 100%;  
+      background: rgba(0,0,0,0.6);  
+    }  
+
+    .header-content {  
+      position: relative;  
+      z-index: 1;  
+    }  
+
+    header h1 { font-size: 2.8rem; }  
+    header p { font-size: 1.2rem; margin-top: 10px; }  
+
+    .header-btn {  
+      display: inline-block;  
+      margin-top: 20px;  
+      padding: 12px 25px;  
+      background: #25D366;  
+      color: #fff;  
+      border-radius: 8px;  
+      text-decoration: none;  
+      font-size: 1rem;  
+      font-weight: bold;  
+      transition: background 0.3s;  
+    }  
+
+    .header-btn:hover { background: #1ebe57; }  
+
+    section {  
+      padding: 60px 20px;  
+      max-width: 1100px;  
+      margin: auto;  
+    }  
+
+    .projects {  
+      display: grid;  
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));  
+      gap: 20px;  
+    }  
+
+    .card {  
+      background: #fff;  
+      padding: 20px;  
+      border-radius: 12px;  
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);  
+      transition: transform 0.3s;  
+      cursor: pointer;  
+    }  
+
+    .card:hover { transform: translateY(-5px); }  
+    .card img { max-width: 100%; border-radius: 10px; }  
+
+    footer {  
+      text-align: center;  
+      padding: 25px;  
+      background: #333;  
+      color: #fff;  
+      margin-top: 30px;  
+    }  
+
+    footer h2 { margin-bottom: 5px; }  
+    footer p { margin-bottom: 15px; font-size: 0.95rem; }  
+
+    .social-icons { margin-bottom: 15px; }  
+    .social-icons a {  
+      color: #fff;  
+      margin: 0 10px;  
+      font-size: 1.5rem;  
+      transition: color 0.3s;  
+    }  
+    .social-icons a:hover { color: #6C63FF; }  
+
+    .footer-separator {  
+      border-top: 1px solid rgba(255,255,255,0.2);  
+      margin: 15px auto;  
+      max-width: 250px;  
+    }  
+
+    /* ==== MODAL ==== */  
+    .modal {  
+      display: none;  
+      position: fixed;  
+      top: 0; left: 0;  
+      width: 100%; height: 100%;  
+      background: rgba(0,0,0,0.6);  
+      align-items: center;  
+      justify-content: center;  
+      opacity: 0;  
+      transition: opacity 0.3s ease;  
+      pointer-events: none;  
+    }  
+
+    .modal.show {  
+      display: flex;  
+      opacity: 1;  
+      pointer-events: auto;  
+    }  
+
+    .modal.hide {  
+      opacity: 0;  
+      pointer-events: none;  
+      transition: opacity 0.3s ease;  
+    }  
+
+    .modal-content {  
+      background: #fff;  
+      padding: 20px;  
+      border-radius: 12px;  
+      max-width: 400px;  
+      text-align: center;  
+      transform: scale(0.8);  
+      transition: transform 0.3s ease;  
+    }  
+
+    .modal.show .modal-content {  
+      transform: scale(1);  
+    }  
+
+    .modal-content h3 { margin-bottom: 15px; }  
+    .modal-content a {  
+      display: inline-block;  
+      padding: 10px 20px;  
+      background: #25D366;  
+      color: #fff;  
+      border-radius: 8px;  
+      text-decoration: none;  
+      font-weight: bold;  
+      transition: background 0.3s;  
+    }  
+    .modal-content a:hover { background: #1ebe57; }  
+    .close-btn { margin-top: 10px; cursor: pointer; color: #333; font-weight: bold; }  
+  </style>  
+</head>  
+<body>  
+
+  <!-- NAVBAR -->  
+  <nav>  
+    <div class="menu-container">  
+      <div class="logo">Ave Book</div>  
+
+      <div class="menu-icon" onclick="toggleMenu()">  
+        <i class="fas fa-bars"></i>  
+      </div>  
+
+      <div class="menu-links" id="menuLinks">  
+        <a href="#about">About</a>  
+        <a href="#projects">Projects</a>  
+        <a href="#contact">Contact</a>  
+
+        <!-- Google Translate aqui -->  
+        <div id="google_translate_element"></div>  
+      </div>  
+    </div>  
+  </nav>  
+
+  <!-- HEADER -->  
+  <header>  
+    <div class="header-content">  
+      <h1>Hello, I’m Ave Book</h1>  
+      <p>Web Developer | Designer | Freelancer</p>  
+      <a href="https://wa.me/244933202227?text=Hello%20Ave%20Book!" target="_blank" class="header-btn">  
+        <i class="fab fa-whatsapp"></i> Contact Me  
+      </a>  
+    </div>  
+  </header>  
+
+  <!-- ABOUT -->  
+  <section id="about">  
+    <h2>About Me</h2>  
+    <p>I am passionate about technology and design, creating modern, responsive and effective digital solutions. My goal is to help businesses and entrepreneurs bring their ideas to life.</p>  
+  </section>  
+
+  <!-- PROJECTS -->  
+  <section id="projects">  
+    <h2>My Projects</h2>  
+    <div class="projects">  
+      <div class="card" onclick="openModal('Landing Page')">  
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085" alt="Landing Page">  
+        <h3>Landing Page</h3>  
+        <p>A modern landing page optimized for conversion.</p>  
+      </div>  
+      <div class="card" onclick="openModal('E-commerce')">  
+        <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f" alt="E-commerce">  
+        <h3>E-commerce</h3>  
+        <p>A responsive online store with a payment system.</p>  
+      </div>  
+      <div class="card" onclick="openModal('Portfolio')">  
+        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d" alt="Portfolio">  
+        <h3>Portfolio</h3>  
+        <p>A personal portfolio with animations and modern UI.</p>  
+      </div>  
+      <div class="card" onclick="openModal('Blog')">  
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475" alt="Blog">  
+        <h3>Blog</h3>  
+        <p>A modern blog with CMS integration and SEO.</p>  
+      </div>  
+    </div>  
+  </section>  
+
+  <!-- FOOTER -->  
+  <footer id="contact">  
+    <h2>Contact Me</h2>  
+    <p>Want to work with me? Click the icons below to reach me!</p>  
+    <div class="social-icons">  
+      <a href="https://wa.me/244933202227" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>  
+      <a href="mailto:ave2006book@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>  
+    </div>  
+    <div class="footer-separator"></div>  
+    <p>© 2025 - Developed by Ave Book</p>  
+  </footer>  
+
+  <!-- MODAL -->  
+  <div id="projectModal" class="modal">  
+    <div class="modal-content">  
+      <h3 id="modalTitle"></h3>  
+      <p>Want to know more? Contact me directly on WhatsApp.</p>  
+      <a id="whatsappLink" target="_blank">Contact on WhatsApp</a>  
+      <div class="close-btn" onclick="closeModal()">Close</div>  
+    </div>  
+  </div>  
+
+  <!-- Google Translate -->  
+  <script type="text/javascript">  
+    function googleTranslateElementInit() {  
+      new google.translate.TranslateElement(  
+        {pageLanguage: 'en', includedLanguages: 'pt,en,es,fr,it,de,ru,zh-CN,ja,ar'},  
+        'google_translate_element'  
+      );  
+    }  
+
+    // Detects browser language and auto-translates if not English  
+    window.addEventListener("load", function () {  
+      let userLang = navigator.language || navigator.userLanguage;  
+      userLang = userLang.split("-")[0];  
+      let supported = ["pt", "en", "es", "fr", "it", "de", "ru", "zh-CN", "ja", "ar"];  
+
+      if (supported.includes(userLang) && userLang !== "en") {  
+        setTimeout(() => {  
+          let select = document.querySelector("select.goog-te-combo");  
+          if (select) {  
+            select.value = userLang;  
+            select.dispatchEvent(new Event("change"));  
+          }  
+        }, 2000);  
+      }  
+    });  
+  </script>  
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>  
+
+  <!-- JS DO SITE -->  
+  <script>  
+    // === MENU ===  
+    function toggleMenu() {  
+      let menu = document.getElementById("menuLinks");  
+      if (menu.style.display === "flex") {  
+        menu.style.display = "none";  
+      } else {  
+        menu.style.display = "flex";  
+      }  
+    }  
+
+    document.querySelectorAll("#menuLinks a").forEach(item => {  
+      item.addEventListener("click", () => {  
+        document.getElementById("menuLinks").style.display = "none";  
+      });  
+    });  
+
+    // Fecha menu ao clicar fora  
+    window.addEventListener("click", function(event) {  
+      const menu = document.getElementById("menuLinks");  
+      const icon = document.querySelector(".menu-icon");  
+      if (menu.style.display === "flex" && !menu.contains(event.target) && !icon.contains(event.target)) {  
+        menu.style.display = "none";  
+      }  
+    });  
+
+    // Fecha menu ao arrastar fora (mobile)  
+    window.addEventListener("touchmove", function(e) {  
+      const menu = document.getElementById("menuLinks");  
+      const icon = document.querySelector(".menu-icon");  
+      if (menu.style.display === "flex" && !menu.contains(e.target) && !icon.contains(e.target)) {  
+        menu.style.display = "none";  
+      }  
+    });  
+
+    // === MODAL ===  
+    function openModal(project) {  
+      const modal = document.getElementById("projectModal");  
+      modal.style.display = "flex";  
+      document.getElementById("modalTitle").innerText = "Project: " + project;  
+      let msg = encodeURIComponent("Hello Ave Book, I want to know more about the project: " + project);  
+      document.getElementById("whatsappLink").href = "https://wa.me/244933202227?text=" + msg;  
+
+      modal.classList.remove("hide");  
+      modal.classList.add("show");  
+    }  
+
+    function closeModal() {  
+      const modal = document.getElementById("projectModal");  
+      modal.classList.remove("show");  
+      modal.classList.add("hide");  
+
+      setTimeout(() => {  
+        modal.style.display = "none";  
+        modal.classList.remove("hide");  
+      }, 300);  
+    }  
+
+    // Fecha modal clicando fora  
+    window.addEventListener("click", function(event) {  
+      const modal = document.getElementById("projectModal");  
+      if (modal.style.display === "flex" && event.target === modal) {  
+        closeModal();  
+      }  
+    });  
+  </script>  
+</body>  
+</html>
